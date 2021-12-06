@@ -209,6 +209,30 @@ FROM 테이블명
 WHERE 조건 ;
 ```
 
+#### `INSERT` 기본형식
+
+```
+INSERT
+INTO 테이블명 (애트리뷰트)
+VALUES(값);
+```
+
+#### `UPDATE` 기본형식
+
+```
+UPDATE 테이블명
+SET 애트리뷰트명
+WHERE 조건;
+```
+
+#### `DELETE` 기본형식
+
+```
+DELETE
+FROM 테이블명
+WHERE 조건;
+```
+
 ### 데이터 제어
 
 - #### 데이터베이스 사용자를 생성하고 모니터링하며 접근을 제어 백업과 회복, 동시성 제어
@@ -412,3 +436,233 @@ REFERENCES 테이블 이름 (애트리뷰트) , ON DELETE 삭제 시 조건 , ON
 
 ![title](https://mblogthumb-phinf.pstatic.net/MjAxNjExMjZfOTEg/MDAxNDgwMTU4NzI1MDUx.2Wp6eD7uN-BeegJWrBuT9yNkc-HB_tEuad8UiDygunAg.F8vxXS0DwnF_ff5qEgqW0BXtg5AZg5lrmh1gG_0xPIsg.JPEG.zxy826/7.PNG?type=w2)  
 ![title](https://mblogthumb-phinf.pstatic.net/MjAxNjExMjZfMTMy/MDAxNDgwMTU4ODU3MTQ5.GRZY5fetkytHr2PitU6TwdOJOfma1uavoz9o4jg6e6Eg.A6u0qOaz1ejlK8_KHeYgFISPXWfKmMWDODp6_KvnFRcg.JPEG.zxy826/8.PNG?type=w2)
+
+# 집계함수
+
+## `SUM` 기본형식
+
+```
+SELECT SUM(애트리뷰트명)
+FROM 테이블명
+WHERE 조건;
+```
+
+### Ex)
+
+### test
+
+| title1 | title2 | title3 |
+| ------ | ------ | ------ |
+| 1      | 2      | 3      |
+| 4      | 5      | 6      |
+| 7      | 8      | 9      |
+
+### select sum(title1) from test;
+
+| sum(title1) |
+| ----------- |
+| 12          |
+
+## `AVG` 기본형식
+
+```
+SELECT AVG(애트리뷰트명)
+FROM 테이블명
+WHERE 조건;
+```
+
+### Ex)
+
+### test
+
+| title1 | title2 | title3 |
+| ------ | ------ | ------ |
+| 1      | 2      | 3      |
+| 4      | 5      | 6      |
+| 7      | 8      | 9      |
+
+### select AVG(title2) from test;
+
+| sum(title2) |
+| ----------- |
+| 5           |
+
+## `MIN` `MAX` 기본형식
+
+```
+SELECT MIN(애트리뷰트명)
+FROM 테이블명
+WHERE 조건;
+```
+
+### Ex)
+
+### test
+
+| title1 | title2 | title3 |
+| ------ | ------ | ------ |
+| 1      | 2      | 3      |
+| 4      | 5      | 6      |
+| 7      | 8      | 9      |
+
+`select min(title1), max(title2) from test`
+| min(title1) | max(title2) |  
+| --- | --- |
+| 1 | 8 |
+
+## `COUNT` 기본형식
+
+```
+SELECT COUNT(애트리뷰트명)
+FROM 테이블명
+WHERE 조건;
+```
+
+### Ex)
+
+### test
+
+| title1 | title2 | title3 |
+| ------ | ------ | ------ |
+| 1      | 2      | 3      |
+| 4      | 2      | 6      |
+| 7      | 8      | 9      |
+
+`SELECT count(_) from test where title2=2;
+| count(_) |
+| --- |
+| 2 |
+
+## `GROUP BY` , `HAVING` 기본형식
+
+```
+SELECT 애트리뷰트명
+FROM 테이블명
+GROUP BY 애트리뷰트명
+HAVING 조건 ;
+```
+
+<br>
+
+# JOIN
+
+### `JOIN` 기본형식
+
+```
+SELECT 애트리뷰트명
+FROM 테이블명 JOIN 조인할 테이블명
+USING (애트리뷰트명);
+```
+
+### `INNER JOIN` 사용법
+
+```
+SELECT 애트리뷰트명
+FROM 조인할 TABLE INNER JOIN 조인할 TABLE
+ON 조인에 사용될 애트리뷰트조건
+```
+
+## 자연조인 사용법
+
+```
+SELECT 애트리뷰트명
+FROM 조인할 TABLE NATURAL JOIN 조인할 TABLE;
+```
+
+### 자연조인 유의점
+
+- #### 조인에 참여하는 애트리뷰트 중 이름이 같은 모든 애트리뷰트를 활용하여 조인
+- #### 동등조인과의 차이점 중복되는 애트리뷰트 하나만 출력
+
+# 외부조인 (OUTER JOIN)
+
+#### 조인연산시 외부조인 하는 릴레이션의 정보를 버리지 않고 보여줌
+
+#### 꼭 필요한 정보들을 남겨두기 위해 사용
+
+#### 해당 정보가 없는 곳은 null 값 채움
+
+```
+SELECT 애트리뷰트명
+FROM 조인할 TABLE OUT JOIN 조인할 TABLE
+ON 애트리뷰트 = 애트리뷰트;
+```
+
+![title](https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2Fdata17%2F2006%2F5%2F30%2F185%2Fouterjoin_01-jinsol1.gif&type=a340)  
+<br>
+
+# LIKE , %, -
+
+### 1. 특정문자로 시작하는 데이터 검색
+
+`SELECT [필드명] FROM [테이블명] WHERE [필드명] LIKE '특정문자열%'`
+
+#### 뒤에 자리수는 상관 X 문자열만 있어도 검색
+
+### 1. 특정문자로 끝나는 데이터 검색
+
+`SELECT [필드명] FROM [테이블명] WHERE [필드명] LIKE '%특정문자열'`
+
+#### 뒤에 자리수는 상관 X 문자열만 있어도 검색
+
+### 1. 특정문자를 포함하는 데이터 검색
+
+`SELECT [필드명] FROM [테이블명] WHERE [필드명] LIKE '%특정문자열%'`
+
+#### 앞,뒤에 자리수는 상관X 문자열만 있어도 검색
+
+### 1. 특정문자로 시작하는 데이터 검색
+
+`SELECT [필드명] FROM [테이블명] WHERE [필드명] LIKE '_특정문자열%'`
+
+#### 앞자리수는 1칸 상관없이 , 나머지 문자열중 해당 문자열만 있어도 검색
+
+<br>
+
+# EXISTS와 IN의 차이
+
+#### `EXISTS` 연산자의 처리순서는 `메인쿼리` -> `서브쿼리`
+
+#### 서브쿼리에서 메인의 정보를 가져올 수 없기 때문에 조건을 각각 설정
+
+#### `IN` 연산자의 처리순서는 `서브쿼리` -> `메인쿼리`
+
+#### 서브에서 메인의 정보를 가져와 모든 조건을 한번에 정리
+
+#### `IN`과 `EXISTS` 는 기능상 차이점은 없지만 수행 시간 관점에서는 차이점이 보임
+
+#### `NOT IN`과 `NOT EXISTS`는 같은 결과가 나올것 같지만 `NOT IN`은 NULL이 포함될 경우 값을 반환하지 못함
+
+# ANY, SOME, ALL
+
+### 서브쿼리와 값비교
+
+### `ANY`,`SOME` : 서브쿼리의 값중 조건에 하나라도 만족할 경우 참
+
+### `ALL` : 서브쿼리의 값 중 조건에 모두 다 만족할경우 참
+
+# IF, CASE
+
+### `IF`와 `CASE`는 `SELECT` 절에 쓰인다
+
+### `IF`는 C언어 3항연산자와 비슷
+
+`IF(조건, 참 ,거짓)`
+
+### `CASE`사용법
+
+```
+CASE
+    WHEN(조건) THEN 결과
+    WHEN(조건) THEN 결과
+    ...
+END (AS 애트리뷰트명)
+```
+
+# CONCAT
+
+### 문자열 연결
+
+```
+CONCAT(속성'연결할 문자' 속성)
+```
